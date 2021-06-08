@@ -1,0 +1,18 @@
+﻿  DiofantKurs.cpp
+c:\arageli\src\arageli\big_float.cpp(136): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  c:\arageli\src\arageli\big_float.hpp(457): note: выполняется компиляция ссылки на экземпляр шаблон функции "T Arageli::big_float::to_native_float<float>(void) const"
+          with
+          [
+              T=float
+          ]
+c:\arageli\src\arageli\big_float.cpp(141): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  Создание кода
+  1 of 775 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+arageli64r.lib(exception.obj) : warning LNK4099: "arageli.pdb" PDB не найден с "arageli64r.lib(exception.obj)" или на "E:\Ср.число решений\Experiments_forAll_pr2_new\x64\Release\arageli.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+arageli64r.lib(big_int.obj) : warning LNK4099: "arageli.pdb" PDB не найден с "arageli64r.lib(big_int.obj)" или на "E:\Ср.число решений\Experiments_forAll_pr2_new\x64\Release\arageli.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+arageli64r.lib(_utility.obj) : warning LNK4099: "arageli.pdb" PDB не найден с "arageli64r.lib(_utility.obj)" или на "E:\Ср.число решений\Experiments_forAll_pr2_new\x64\Release\arageli.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+arageli64r.lib(bigar.obj) : warning LNK4099: "arageli.pdb" PDB не найден с "arageli64r.lib(bigar.obj)" или на "E:\Ср.число решений\Experiments_forAll_pr2_new\x64\Release\arageli.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+  DiofantKurs.vcxproj -> E:\Ср.число решений\Experiments_forAll_pr2_new\x64\Release\DiofantKurs.exe
