@@ -934,7 +934,7 @@ isOnlyPrimitiveSolution = () -> {
 
 number_of_solution_loop = (startD, endD, minN = 1, maxN = 1000, threshold = 0, thresholdN = 100) -> {
 	my(outFileName, outfile);
-	if(issquare(D) == 1,
+	if(issquare(startD) == 1,
 		print("ERROR! D should not be a perfect square!");
 		return(-1);
 	);
