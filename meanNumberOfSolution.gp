@@ -628,7 +628,7 @@ calculationOnlyPrimitiveSolution = (D, Nmin, Nmax, threashold, threshold_n, outF
 		);
 
 		if (outFile == -1,
-			outputPrimiviteInfo(D,Nmin, Nmax);
+			outputPrimiviteInfo(D,Nmin, Nmax, 1);
 			return();
 		);
 
@@ -692,7 +692,7 @@ calculationAllSolution = (D, Nmin, Nmax, threashold, threshold_n, outFile = -1) 
 			return(0);
 		);
 		if (outFile == -1,
-			outputAllInfo(D,Nmin, Nmax);
+			outputAllInfo(D,Nmin, Nmax, 1);
 			return();
 		);
 
@@ -771,26 +771,40 @@ calculationAllSolution = (D, Nmin, Nmax, threashold, threshold_n, outFile = -1) 
 		);
 }
 
+filewritePrimitiveAllColumns = (file, D, N, mean) -> {
+	filewrite(file, Str(D, "	", N, "	", mean));
+}
 
-outputPrimiviteInfo = (D, Nmin, Nmax) -> {
-	my(f1,f2,f3, file1,file2,file3,countN, countWS, primAnsSum, str_meanPrimCount, resAns);
-	\\f1 = Str(D, "p_ShareOfDecisions.txt");
+filewritePrimitiveWithoutFirstColumn = (file, D, N, mean) -> {
+	filewrite(file, Str(N, "	", mean));
+}
+
+
+outputPrimiviteInfo = (D, Nmin, Nmax, isPrintWithoutFirstColunm = 0) -> {
+	my(f2,f3, file1,file2,file3,countN, countWS, primAnsSum, str_meanPrimCount, resAns);
 	f2 = Str(D, "p_NumberOfClasses.txt");
 	f3 = Str(D, "p_MeanNumberOfDecisions.txt");
 
-	\\file1 = fileopen(f1, "w");
 	file2 = fileopen(f2, "w");
 	file3 = fileopen(f3, "w");
 
-	\\filewrite(file1, "Value_D	Value_N	withSolution	All	numb_of_primitive");
-	filewrite(file2, "Value_D	Value_N	numb_of_primitive");
-	filewrite(file3, "D	Value_N	mean_numb_primitive_sol");
+	if (isPrintWithoutFirstColunm,
+		filewrite(file2, "Value_N	numb_of_primitive");
+		filewrite(file3, "Value_N	mean_numb_primitive_sol"),
+			filewrite(file2, "D	Value_N	numb_of_primitive");
+			filewrite(file3, "D	Value_N	mean_numb_primitive_sol");
+	);
 
 	countN = 1;
 	countWS = 0;
 
 	primAnsSum = 0;
 	str_meanPrimCount = "";
+
+	if (isPrintWithoutFirstColunm,
+		writeFile = filewritePrimitiveWithoutFirstColumn,
+			writeFile = filewritePrimitiveAllColumns;
+	);
 
 	for(N = Nmin, Nmax,
 		if(N == 0, next);
@@ -807,48 +821,59 @@ outputPrimiviteInfo = (D, Nmin, Nmax) -> {
 				countWS++;
 		);
 
-		\\filewrite(file1, Str(D, "	", N, "	", countWS, "	", countN, "	", resAns[3]));
-
 		if(resAns[3] != 0,
-			filewrite(file2, Str(D, "	", N, "	", resAns[3]));
+			writeFile(file2, D, N, resAns[3]);
 
 			primAnsSum += resAns[3];
 			str_meanPrimCount = divWithRem(primAnsSum, countN);
 
-			filewrite(file3, Str(D, "	", N, "	", str_meanPrimCount));
+			writeFile(file3, D, N, str_meanPrimCount);
 		);
 		if(N % 100 == 0,
+			fileflush(file2);
+			fileflush(file3);
 			printf("%3d	%s\n", N, str_meanPrimCount);
 		);
 		countN++;
 	);
-	\\fileclose(file1);
 	fileclose(file2);
 	fileclose(file3);
 
-	\\print("Data is written to files:\n	"f1 "\n	"f2 "\n	"f3);
 	print("Data is written to files:\n	"f2 "\n	"f3);
 }
 
-outputAllInfo = (D, Nmin, Nmax) -> {
-	my(f1,f2,f3, file1,file2,file3,countN, countWS, primAnsSum, allAnsSum,  str_meanPrimCount, str_meanAllCount, resAns, ans, numberAllClasses, newN);
-	\\f1 = Str(D, "_ShareOfDecisions.txt");
+filewriteAllColumns = (file, D, N, meanPrime, meanAll) -> {
+	filewrite(file, Str(D, "	",N,"	", meanPrime,"	", meanAll));
+}
+
+filewriteWithoutFirstColumn = (file, D, N, meanPrime, meanAll) -> {
+	filewrite(file, Str(N,"	", meanPrime,"	", meanAll));
+}
+
+outputAllInfo = (D, Nmin, Nmax, isPrintWithoutFirstColunm = 0) -> {
+	my(f2,f3, file1,file2,file3,countN, countWS, primAnsSum, allAnsSum,  str_meanPrimCount, str_meanAllCount, resAns, ans, numberAllClasses, newN);
 	f2 = Str(D, "_NumberOfClasses.txt");
 	f3 = Str(D, "_MeanNumberOfDecisions.txt");
 
-	\\file1 = fileopen(f1, "w");
 	file2 = fileopen(f2, "w");
 	file3 = fileopen(f3, "w");
 
-	\\filewrite(file1, "Value_D	Value_N	withSolution	All	numb_of_primitive");
-	filewrite(file2, "Value_D	Value_N	numb_of_primitive");
-	filewrite(file3, "D	Value_N	mean_numb_primitive_sol");
-
+	if (isPrintWithoutFirstColunm,
+		filewrite(file2, "Value_N	numb_of_primitive	numb_of_all");
+		filewrite(file3, "Value_N	mean_numb_primitive_sol	mean_numb_all_sol"),
+			filewrite(file2, "D	Value_N	numb_of_primitive	numb_of_all");
+			filewrite(file3, "D	Value_N	mean_numb_primitive_sol	mean_numb_all_sol");
+	);
 	countN = 1;
 	countWS = 0;
 
 	primAnsSum = 0;
 	str_meanPrimCount = "";
+
+	if (isPrintWithoutFirstColunm,
+		writeFile = filewriteWithoutFirstColumn,
+			writeFile = filewriteAllColumns;
+	);
 
 	for(N = Nmin, Nmax,
 			if(N == 0, next);
@@ -890,10 +915,8 @@ outputAllInfo = (D, Nmin, Nmax) -> {
 					countWS++;
 			);
 
-			\\filewrite(file1, Str(D, "	", N, "	", countWS, "	", countN, "	", resAns[3], "	", numberAllClasses));
-
 			if(numberAllClasses != 0,
-				filewrite(file2, Str(D,"	",N,"	", resAns[3],"	", numberAllClasses));
+				writeFile(file2, D, N, resAns[3], numberAllClasses);
 
 				primAnsSum += resAns[3];
 				allAnsSum += numberAllClasses;
@@ -901,21 +924,20 @@ outputAllInfo = (D, Nmin, Nmax) -> {
 				str_meanPrimCount = divWithRem(primAnsSum, countN);
 				str_meanAllCount = divWithRem(allAnsSum, countN);
 
-				filewrite(file3, Str(D, "	",N,"	", str_meanPrimCount,"	", str_meanAllCount));
+				writeFile(file3, D, N, str_meanPrimCount, str_meanAllCount);
 			);
 
 			if(N % 100 == 0,
+				fileflush(file2);
+				fileflush(file3);
 				printf("%3d	%s	%s\n", N, str_meanPrimCount, str_meanAllCount);
 			);
 			countN++;
 
 		);
-
-	\\fileclose(file1);
 	fileclose(file2);
 	fileclose(file3);
 
-	\\print("Data is written to files:\n	"f1 "\n	"f2 "\n	"f3);
 	print("Data is written to files:\n	"f2 "\n	"f3);
 }
 
