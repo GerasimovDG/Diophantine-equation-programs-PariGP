@@ -1,23 +1,13 @@
-checkFullSquare = (D) -> {
-	my(d);
-	d = sqrtint(abs(D));
-	if (sqr(d) == abs(D),
-		\\ print("The number is a perfect square!");
-		return(1);
-	);
-	return(0);
-};
-
 checkSolutionExist = (D,N) -> {
 	if (N == -3,
 		\\ тут D-2 или D*D-2?
-		if (checkFullSquare(D*D - 2),
+		if (issquare(D*D - 2),
 			\\ print("No solution. [1]");
 			return(0);
 		);
 	);
 	if (D == (N*N) - 1,
-		if (checkFullSquare(N),
+		if (issquare(N),
 			return(1),
 				\\ print("No solution. [2]");
 				return(0);
@@ -622,11 +612,9 @@ mainSolution = (D,N) -> {
 };
 
 
-calculationOnlyPrimitiveSolution = (startD, maxD, Nmin, Nmax, threashold, threshold_n, outFile) -> {
+calculationOnlyPrimitiveSolution = (D, Nmin, Nmax, threashold, threshold_n, outFile = -1) -> {
+	my(countN, countWS, primAnsSum, str_meanPrimCount, resAns, mean);
 
-	filewrite(outfile, "Value_D	mean_of_primvitive");
-
-	forprime(D = startD, maxD,
 		print("****************** D = "D);
 
 		\\ total number of completed equation
@@ -634,8 +622,14 @@ calculationOnlyPrimitiveSolution = (startD, maxD, Nmin, Nmax, threashold, thresh
 		\\ number of equation with solution
 		countWS = 0;
 
-		if(checkFullSquare(D),
-			next;
+		if(issquare(D),
+			print("ERROR - D should not be a perfect square");
+			return(0);
+		);
+
+		if (outFile == -1,
+			outputPrimiviteInfo(D,Nmin, Nmax);
+			return();
 		);
 
 		print("Value D 	mean_number_primitive_solution");
@@ -680,15 +674,12 @@ calculationOnlyPrimitiveSolution = (startD, maxD, Nmin, Nmax, threashold, thresh
 			countN++;
 
 		);
-
-	);
 }
 
 
-calculationAllSolution = (startD, maxD, Nmin, Nmax, threashold, threshold_n, outFile) -> {
-	filewrite(outfile, "Value_D	mean_of_primvitive	mean_of_all");
-
-	forprime(D = startD, maxD,
+calculationAllSolution = (D, Nmin, Nmax, threashold, threshold_n, outFile = -1) -> {
+	my(countN, countWS, primAnsSum, allAnsSum, str_meanPrimCount, str_meanAllCount,
+	 resAns, ans, mean, numberAllClasses, newN);
 		print("****************** D = "D);
 
 		\\ total number of completed equation
@@ -696,8 +687,13 @@ calculationAllSolution = (startD, maxD, Nmin, Nmax, threashold, threshold_n, out
 		\\ number of equation with solution
 		countWS = 0;
 
-		if(checkFullSquare(D),
-			next;
+		if(issquare(D),
+			print("ERROR - D should not be a perfect square");
+			return(0);
+		);
+		if (outFile == -1,
+			outputAllInfo(D,Nmin, Nmax);
+			return();
 		);
 
 		print("Value D 	mean_number_primitive_solution");
@@ -773,10 +769,7 @@ calculationAllSolution = (startD, maxD, Nmin, Nmax, threashold, threshold_n, out
 			countN++;
 
 		);
-
-	);
 }
-
 
 
 outputPrimiviteInfo = (D, Nmin, Nmax) -> {
@@ -833,7 +826,8 @@ outputPrimiviteInfo = (D, Nmin, Nmax) -> {
 	fileclose(file2);
 	fileclose(file3);
 
-	print("Data is written to files:\n	"f1 "\n	"f2 "\n	"f3);
+	\\print("Data is written to files:\n	"f1 "\n	"f2 "\n	"f3);
+	print("Data is written to files:\n	"f2 "\n	"f3);
 }
 
 outputAllInfo = (D, Nmin, Nmax) -> {
@@ -921,7 +915,8 @@ outputAllInfo = (D, Nmin, Nmax) -> {
 	fileclose(file2);
 	fileclose(file3);
 
-	print("Data is written to files:\n	"f1 "\n	"f2 "\n	"f3);
+	\\print("Data is written to files:\n	"f1 "\n	"f2 "\n	"f3);
+	print("Data is written to files:\n	"f2 "\n	"f3);
 }
 
 
@@ -937,23 +932,50 @@ isOnlyPrimitiveSolution = () -> {
 	);
 };
 
-number_of_solution = (startD, endD, minN = 1, maxN = 1000, threshold = 0, thresholdN = 100) -> {
-	if(issquare(startD) == 1,
-		startD++;
+number_of_solution_loop = (startD, endD, minN = 1, maxN = 1000, threshold = 0, thresholdN = 100) -> {
+	my(outFileName, outfile);
+	if(issquare(D) == 1,
+		print("ERROR! D should not be a perfect square!");
+		return(-1);
 	);
 	default(timer, 1);
 	if (isOnlyPrimitiveSolution() == 1,
 
 		outFileName = Str("D_Means_values_", startD, "_", endD, "p.txt");
 		outfile = fileopen(outFileName, "w");
-		calculationOnlyPrimitiveSolution(startD, endD, minN, maxN, threshold, thresholdN, outfile),
+		filewrite(outfile, "Value_D	mean_of_primvitive");
+		forprime(D = startD, endD,
+			calculationOnlyPrimitiveSolution(D, minN, maxN, threshold, thresholdN, outfile);
+		),
 			outFileName = Str("D_Means_values_", startD, "_", endD, ".txt");
 			outfile = fileopen(outFileName, "w");
-			calculationAllSolution(startD, endD, minN, maxN, threshold, thresholdN, outfile);
+			filewrite(outfile, "Value_D	mean_of_primvitive	mean_of_all");
+
+			forprime(D = startD, endD,
+				calculationAllSolution(D, minN, maxN, threshold, thresholdN, outfile);
+			);
 	);
 
 	fileclose(outfile);
 	print("General data is written to file - "outFileName);
+	print("******************end******************");
+	print("time = "gettime()/1000.0" sec");
+};
+
+
+number_of_solution = (D, minN = 1, maxN = 1000) -> {
+	if(issquare(D) == 1,
+		print("ERROR! D should not be a perfect square!");
+		return(-1);
+	);
+	threshold = 0;
+	thresholdN = maxN;
+	default(timer, 1);
+	if (isOnlyPrimitiveSolution() == 1,
+		calculationOnlyPrimitiveSolution(D, minN, maxN, threshold, thresholdN),
+			calculationAllSolution(D, minN, maxN, threshold, thresholdN);
+	);
+
 	print("******************end******************");
 	print("time = "gettime()/1000.0" sec");
 };
@@ -995,7 +1017,8 @@ periodPrime = (D) -> {
 }
 
 periodAll = (D) -> {
-	if(checkFullSquare(D),
+	if(issquare(D),
+		print("ERROR! D should not be a perfect square!");
 		return(0);
 	);
 	return(period(D));
@@ -1250,8 +1273,8 @@ number_of_d_with_period_length(fileName) = {
 	number_of_d_4k_plus_i(outFileName, fileSize);
 }
 
-
-addhelp(number_of_solution, " * number_of_solution(start_d, end_d, min_n, max_n, threshold, threshold_n) - Finds number of solution of the generalized Pell equation on the interval start_d <= D <= end_d with fixed D & changing N from min_n to max_n. Outputs the average number of solutions, the number of equations with solutions & the total number of equation.\n\n  	Input:	- start_d	- the value of d that starts the calculation.\n 		- end_d		- the value of d at which the calculation ends.\n 		- min_n		- minimum value n on interval min_n <= N <= max_n (without N == 0) \n		- max_n		- maximum value n on interval min_n <= N <= max_n (without N == 0)\n		- threshold	- minimum bound of the mean of primitive solutions \n 		- threshold_n	- value at which the threshold is checked");
+addhelp(number_of_solution, " * number_of_solution(d, min_n, max_n) - Finds number of solution of the generalized Pell equation x^2-Dy^2=N with fixed D & changing N from min_n to max_n. Outputs the average number of solutions, the number of equations with solutions & the total number of equation.\n\n  	Input:	- d		- the value D of equation x^2-Dy^2=N.\n 		- min_n		- {1 by default} minimum value n on interval min_n <= N <= max_n (without N == 0) \n		- max_n		- {1000 by default} maximum value n on interval min_n <= N <= max_n (without N == 0)");
+addhelp(number_of_solution_loop, " * number_of_solution_loop(start_d, end_d, min_n, max_n, threshold, threshold_n) - Finds number of solution of the generalized Pell equation on the interval start_d <= D <= end_d with fixed D & changing N from min_n to max_n. Outputs the average number of solutions, the number of equations with solutions & the total number of equation.\n\n  	Input:	- start_d	- the value of d that starts the calculation.\n 		- end_d		- the value of d at which the calculation ends.\n 		- min_n		- minimum value n on interval min_n <= N <= max_n (without N == 0) \n		- max_n		- maximum value n on interval min_n <= N <= max_n (without N == 0)\n		- threshold	- minimum bound of the mean of primitive solutions \n 		- threshold_n	- value at which the threshold is checked");
 addhelp(period_loop_prime, " * period_loop_prime(start_d, end_d) - Finds period length for prime D on the interval start_d <= D <= end_d.\n 	Input:	- start_d	- positive integer\n 		- end_d 		- positive integer. \n 	The results are written to a file - Period_length_prime<start_d>_<end_d>.txt");
 addhelp(period_loop_all, " * period_loop_all(start_d, end_d) - Finds period length for all D on the interval start_d <= D <= end_d.\n 	Input:	- start_d 	- positive integer\n 		- end_d 		- positive integer \n 	The results are written to a file - Period_length_all<start_d>_<end_d>.txt");
 addhelp(number_of_d_with_period_length, "\n * number_of_d_with_period_length(fileName) - Calculates the number of d < D with a fixed period length l.\n 	Input: fileName - string name of the output file of the function period_loop_prime(...)\n 			or period_loop_all(...).\n That is, you need to first run the function 'period_loop_prime(...)' (or 'period_loop_all(...)'), and pass the resulting file to the function 'number_of_d_with_period_length(...)'.\n E.g: number_of_d_with_period_length(\"Period_length_all100_110.txt\")");
@@ -1262,7 +1285,8 @@ print("		*	Number of solution of the generalized Pell equation  x^2-Dy^2=N	*\n		
 print("		*		with fixed D & changing N from 1 to maxN		*\n		*************************************************************************	");
 print("		*	Search a period length on the interval startD <= D <= endD 	*\n		* 			for prime & all numbers				*");
 print("		*************************************************************************	");
-print1("This package includes the function:\n 	* number_of_solution(start_d, end_d, min_n, max_n, threshold, threshold_n)	- Finds number of solution\n 				of the generalized Pell equation on the interval start_d <= D <= end_d with\n 				fixed D & changing N from min_n to max_n.");
+print("This package includes the function:\n 	* number_of_solution(d, min_n, max_n)	- Finds number of solution of the generalized\n 				 Pell equation with fixed D & changing N from min_n to max_n.");
+print1(" 	* number_of_solution_loop(start_d, end_d, min_n, max_n, threshold, threshold_n)	- Finds number of solution\n 				of the generalized Pell equation on the interval start_d <= D <= end_d with\n 				fixed D & changing N from min_n to max_n.");
 
 
 
