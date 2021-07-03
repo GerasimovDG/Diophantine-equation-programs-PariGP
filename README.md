@@ -10,7 +10,7 @@ A set of programs for working with Diophantine equations. The programs are writt
 - [matrix_uniformity.gp](#matrix_uniformity)
 - [meanNumberOfSolution.gp](#meanNumberOfSolution)
 _____
-
+[:arrow_up:Содержание](#Содержание)
 <a name="ABC=N"><h2>ABC=N.gp и ABC=N_only-answer.gp</h2></a>
 Поиск примитивных и непримитивных решений уравнения 𝐴𝑥^2 + 𝐵𝑥𝑦 + 𝐶𝑦^2 = 𝑁, где Δ = 𝐵^2 − 4𝐴𝐶 > 0, 𝐴, 𝐵, 𝐶− целые числа, а 𝑁 - целое
 число, неравное 0.
