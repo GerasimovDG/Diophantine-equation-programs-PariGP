@@ -12,7 +12,7 @@ A set of programs for working with Diophantine equations. The programs are writt
 _____
 ----
 ----
-<a name="ABC=N"><h1>ABC=N.gp и ABC=N_only-answer.gp</h1></a>
+<a name="ABC=N"><h2 align="center">ABC=N.gp и ABC=N_only-answer.gp</h2></a>
 Поиск примитивных и непримитивных решений уравнения 𝐴𝑥^2 + 𝐵𝑥𝑦 + 𝐶𝑦^2 = 𝑁, где Δ = 𝐵^2 − 4𝐴𝐶 > 0, 𝐴, 𝐵, 𝐶− целые числа, а 𝑁 - целое
 число, неравное 0.
 
@@ -24,7 +24,7 @@ _____
 - [transformationABC(a,b,c,N)](#transformationABC(a,b,c,N))
 ### Описание функций:
 
-1.  <a name="ABC-N"><p align="center">ABC_N(A,B,C,N)</p></a> - находит примитивные и непримитивные решения уравнения 𝐴𝑥^2+𝐵𝑥𝑦+𝐶𝑦^2 = 𝑁, где Δ=𝐵^2−4𝐴𝐶>0, 𝐴, 𝐵, 𝐶− целые числа, а 𝑁 - целое
+1.  <a name="ABC-N"><h4><i>ABC_N(A,B,C,N)</i></h4></a> - находит примитивные и непримитивные решения уравнения 𝐴𝑥^2+𝐵𝑥𝑦+𝐶𝑦^2 = 𝑁, где Δ=𝐵^2−4𝐴𝐶>0, 𝐴, 𝐵, 𝐶− целые числа, а 𝑁 - целое
 число, неравное 0.
     + Аргументы функции:
       + 𝐴, 𝐵, 𝐶 - целые числа.
@@ -52,14 +52,14 @@ _____
 _____
 ----
 ----
-<a name="crypto"><h2>cryptosystem.gp</h2></a> 
+<a name="crypto"><h2 align="center">cryptosystem.gp</h2></a> 
 ...
 
 [:arrow_up:Содержание](#Содержание)
 _____
 ----
 ----
-<a name="generalizedPellDNgp"><h2>generalizedPellDN.gp</h2></a>
+<a name="generalizedPellDNgp"><h2 align="center">generalizedPellDN.gp</h2></a>
 ### Список функций:
 - [period(x)](#period)
 - [pell(D)](#pell)
@@ -92,7 +92,7 @@ _____
 _____
 ----
 ----
-<a name="matrix_uniformity"><h2>matrix_uniformity.gp</h2></a> - работа с матрицами второго порядка, имеющими неприводимый характеристический многочлен 𝜆^2 − 𝑑.
+<a name="matrix_uniformity"><h2 align="center">matrix_uniformity.gp</h2></a> - работа с матрицами второго порядка, имеющими неприводимый характеристический многочлен 𝜆^2 − 𝑑.
 ### Список функций:
 - [is_matrix_uniformity(matrixA, matrixB)](#is_matrix_uniformity)
 - [matrix_similarity_classes(d, flag = 0)](#matrix_similarity_classes)
@@ -144,7 +144,7 @@ _____
 _____
 ----
 ----
-<a name="meanNumberOfSolution"><h2>meanNumberOfSolution.gp</h2></a>
+<a name="meanNumberOfSolution"><h2 align="center">meanNumberOfSolution.gp</h2></a>
 ### Список функций:
 - [ number_of_solution(d, min_n, max_n)](#number_of_solution)
 - [number_of_solution_loop(start_d, end_d, min_n max_n, threshold, threshold_n)](#number_of_solution_loop)
